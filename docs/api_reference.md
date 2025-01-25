@@ -6,4 +6,5 @@
 
 ## Документация по submodule
 
-::: my_package.subpackage.submodule
+::: my_package.subpackage.script_5
+::: my_package.subpackage.script_4
