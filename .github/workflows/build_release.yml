@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install mkdocs mkdocs-versioning
+          pip install mkdocs mkdocs-versioning mkdocstrings-python mkdocs-jupyter
 
       - name: Get the latest tag
         id: get_latest_tag
