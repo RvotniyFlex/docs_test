@@ -77,7 +77,8 @@ jobs:
           git tag $NEW_TAG
           git push origin $NEW_TAG
         env:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
       - name: Build documentation
         run: |
           mkdocs build
