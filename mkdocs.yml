@@ -3,9 +3,13 @@ site_name: 'My Project Docs'
 site_url: 'https://username.github.io/myproject/'
 
 theme:
-  name: 'readthedocs'
+  name: 'material'
   language: 'ru'  # если нужно
-
+  features:
+      - versioning
+      - navigation.instant
+      - search.highlight
+      - search.min_search_length: 3
 nav:
  - Главная: index.md
  - API: api_reference.md
@@ -14,10 +18,15 @@ plugins:
   - mkdocs-jupyter
   - mkdocstrings:
       default_handler: python
-  - mkdocs-versioning:
-      default_version: 'latest'  # Версия по умолчанию
-      version_directory: 'versions'  # Директория для версий
-      create_new_version: true
+  - mike:
+      # These fields are all optional; the defaults are as below...
+      alias_type: symlink
+      redirect_template: null
+      deploy_prefix: ''
+      canonical_version: null
+      version_selector: true
+      css_dir: css
+      javascript_dir: js
 
 
 markdown_extensions:
