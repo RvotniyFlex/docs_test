@@ -1,0 +1,85 @@
+name: Release version and build documentation 
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  versioning_and_deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install mkdocs mkdocs-versioning
+
+      - name: Get the latest tag
+        id: get_latest_tag
+        run: |
+          latest_tag=$(git describe --tags --abbrev=0)
+          echo "Latest tag: $latest_tag"
+          echo "LATEST_TAG=$latest_tag" >> $GITHUB_ENV
+
+      - name: Determine version increment
+        id: version_increment
+        run: |
+          # Определим тип инкремента на основе сообщений коммитов
+          increment_type="patch"
+          commits=$(git log --oneline --since="1 day ago")
+          echo "$commits"
+
+          # Логика для семантического инкрементирования
+          if echo "$commits" | grep -qE "(BREAKING CHANGE|major)"; then
+            increment_type="major"
+          elif echo "$commits" | grep -qE "(feature|feat)"; then
+            increment_type="minor"
+          fi
+
+          echo "Increment type: $increment_type"
+          echo "INCREMENT_TYPE=$increment_type" >> $GITHUB_ENV
+
+      - name: Increment version
+        id: increment_version
+        run: |
+          version=${LATEST_TAG/v/}  # Убираем 'v' из тега
+          major_minor=$(echo $version | cut -d. -f1-2)
+          patch=$(echo $version | cut -d. -f3)
+
+          if [ "$INCREMENT_TYPE" == "major" ]; then
+            major=$((major + 1))
+            minor=0
+            patch=0
+          elif [ "$INCREMENT_TYPE" == "minor" ]; then
+            minor=$((minor + 1))
+            patch=0
+          else
+            patch=$((patch + 1))
+          fi
+
+          new_tag="v$major_minor.$minor.$patch"
+          echo "New tag: $new_tag"
+          echo "NEW_TAG=$new_tag" >> $GITHUB_ENV
+
+      - name: Create and push new tag
+        run: |
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
+
+      - name: Build documentation
+        run: |
+          mkdocs build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          publish_dir: ./site
