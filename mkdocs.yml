@@ -14,6 +14,10 @@ plugins:
   - mkdocs-jupyter
   - mkdocstrings:
       default_handler: python
+  - mkdocs-versioning:
+      default_version: 'latest'  # Версия по умолчанию
+      version_directory: 'versions'  # Директория для версий
+      create_new_version: true
 
 
 markdown_extensions:
