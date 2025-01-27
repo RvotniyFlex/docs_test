@@ -5,11 +5,8 @@ site_url: 'https://username.github.io/myproject/'
 theme:
   name: 'material'
   language: 'ru'  
-  features:
-      - versioning
-      - navigation.instant
-      - search.highlight
-      - search.min_search_length: 3
+  version:
+    provider: mike
 nav:
  - Главная: index.md
  - API: api_reference.md
