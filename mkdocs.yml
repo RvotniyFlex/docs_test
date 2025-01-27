@@ -10,9 +10,9 @@ theme:
 nav:
  - Главная: index.md
  - API: api_reference.md
- - Пример ноутбука: module_example.ipynb
+ # - Пример ноутбука: module_example.ipynb
 plugins:
-  - mkdocs-jupyter
+  #- mkdocs_jupyter
   - mkdocstrings:
       default_handler: python
   - mike:
