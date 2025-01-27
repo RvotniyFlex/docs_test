@@ -4,7 +4,7 @@ site_url: 'https://username.github.io/myproject/'
 
 theme:
   name: 'material'
-  language: 'ru'  # если нужно
+  language: 'ru'  
   features:
       - versioning
       - navigation.instant
